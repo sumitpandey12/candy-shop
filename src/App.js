@@ -1,24 +1,30 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from "react";
+import "./App.css";
+import FormField from "./components/formField";
+import Header from "./components/header";
+import ListOfItems from "./components/listOfItems";
+import ItemProvider from "./store/Items/itemProvider";
+import CartProvider from "./store/Cart/cartProvider";
+import Cart from "./components/cart";
 
 function App() {
+  const [isCartOpen, setIsCartOpen] = useState(false);
+
+  function toggleCard(e) {
+    setIsCartOpen(!isCartOpen);
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ItemProvider>
+      <CartProvider>
+        <div className="App">
+          {isCartOpen && <Cart onClose={toggleCard} />}
+          <Header onClick={toggleCard} />
+          <FormField />
+          <ListOfItems />
+        </div>
+      </CartProvider>
+    </ItemProvider>
   );
 }
 
